@@ -1,0 +1,76 @@
+@(invoiceDetailForm: play.data.Form[InvoiceDetail])(invoiceId: Long)(mode: String)
+
+@import tags._
+@import helper._
+@import models._
+@import views.html.common._
+
+@selectFC = @{ b3.horizontal.fieldConstructor("col-md-2", "col-md-6") }
+@amountFC = @{ b3.horizontal.fieldConstructor("col-md-2", "col-md-3") }
+@implicitFieldConstructor = @{ b3.horizontal.fieldConstructor("col-md-2", "col-md-8") }
+
+@main("Invoice Detail Info") {
+    <div class="page-header">
+        <h2>Invoice Detail Information</h2>
+    </div>
+    <fieldset>
+        <legend> Invoice Detail (@mode) </legend>
+        @b3.form(action = routes.InvoiceController.saveInvoiceDetail(invoiceId, mode)) {
+            @if(mode != "Adding") {
+                @b3.text(invoiceDetailForm("id")),
+                '_label -> "Invoice Detail Id",
+                'readOnly -> "readOnly")(selectFC, implicitly[Messages])
+            }
+
+            @b3.select(invoiceDetailForm("service.id"),
+                options = options(Service.options),
+                '_label -> "ID",
+                '_default -> "-- Select Service --",
+                'onchange -> "updateAmount()")(selectFC, implicitly[Messages])
+
+            @b3.text(invoiceDetailForm("amount"),
+                '_label -> "Amount",
+                'maxlength -> 15,
+                'placeholder -> "Amount")(amountFC, implicitly[Messages])
+
+            @b3.textarea(invoiceDetailForm("description"),
+                '_label -> "Description",
+                'maxlength -> 50,
+                'placeholder -> "Description")
+
+            <div class="form-group">
+                <div class="col-md-offset-2">
+                    <input type="submit" class="btn btn-success" value="Save" />
+                    <button type="button" class="btn btn-warning" onclick="window.location = '@routes.InvoiceController.listInvoiceDetail(invoiceId)';" value="cancel">
+                        Cancel</button>
+                </div>
+            </div>
+        }
+    </fieldset>
+
+    @helper.javascriptRouter("jsServicesRoutes")(
+        routes.javascript.ServiceController.find
+    )
+
+    <script type="text/javascript" src="@routes.ServiceController.jsServiceRoutes"></script>
+    <script type="text/javascript" charset="utf-8">
+            function updateAmount() {
+                var id = $('#service_id').val();
+                var r = jsSeviceRoutes.controllers.ServiceController.find(id);
+                $.ajax({
+                    url: r.url,
+                    dataType: 'json',
+                    success: function (data) {
+                        $('#amount').val(data.amout);
+                        $('#description').val(data.description);
+                    },
+                    error: function () {
+                        $('#amount').val("");
+                        $('#description').val("");
+
+                    }
+                })
+
+            }
+    </script>
+}

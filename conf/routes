@@ -1,0 +1,51 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing a sample home page
+GET           /                                       controllers.HomeController.index
+# An example controller showing how to use dependency injection
+GET           /count                                  controllers.CountController.count
+# An example controller showing how to write asynchronous code
+GET           /message                                controllers.AsyncController.message
+
+# Service
+
+GET           /services                               controllers.ServiceController.list
+GET           /services/new                           controllers.ServiceController.add
+POST          /services/save/:mode                    controllers.ServiceController.save(mode:String)
+GET           /services/edit/:id                      controllers.ServiceController.edit(id:Long)
+DELETE        /services/delete/:id                    controllers.ServiceController.delete(id:Long)
+GET           /services/find/:id                      controllers.ServiceController.find(id:Long)
+
+# Customer
+
+GET           /customer                               controllers.CustomerController.list
+GET           /customer/new                           controllers.CustomerController.add
+POST          /customer/save/:mode                    controllers.CustomerController.save(mode:String)
+GET           /customer/edit/:id                      controllers.CustomerController.edit(id:Long)
+DELETE        /customer/delete/:id                    controllers.CustomerController.delete(id:Long)
+
+# Invoice
+GET           /invoice                                controllers.InvoiceController.list
+GET           /invoice/new                            controllers.InvoiceController.add
+POST          /invoice/save/:mode                     controllers.InvoiceController.save(mode:String)
+POST          /invoice/search                         controllers.InvoiceController.search
+GET           /invoice/edit/:id                       controllers.InvoiceController.edit(id:Long)
+DELETE        /invoice/delete/:id                     controllers.InvoiceController.delete(id:Long)
+
+# Invoice Detail
+GET           /invoice/detail/:id1                    controllers.InvoiceController.listInvoiceDetail(id1: Long)
+GET           /invoice/detail/new/:id1                controllers.InvoiceController.addInvoiceDetail(id1: Long)
+GET           /invoice/detail/edit/:id1/:id2          controllers.InvoiceController.editInvoiceDetail(id1:Long, id2:Long)
+POST          /invoice/detail/save/:id1/:mode         controllers.InvoiceController.saveInvoiceDetail(id1: Long, mode:String)
+DELETE        /invoice/detail/delete/:id1/:id2        controllers.InvoiceController.deleteInvoiceDetail(id1:Long, id2:Long)
+
+# Map static resources from the /public folder to the /assets URL path
+GET           /assets/*file                           controllers.Assets.at(path="/public", file)
+GET           /assets/*file                           controllers.Assets.versioned(path="/public", file: Asset)
+GET           /webjars/*file                          controllers.WebJarAssets.at(file)
+
+# JavaScript Routes for Ajax call
+#GET           /services/find/:code                    controllers.ServiceController.find(id:Long)
+GET           /jsServiceRoutes                        controllers.ServiceController.jsServiceRoutes()

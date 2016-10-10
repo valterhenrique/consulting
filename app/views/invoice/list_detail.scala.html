@@ -1,0 +1,51 @@
+@(invoiceDetails: List[InvoiceDetail])(invoiceId: Long)
+
+@import views.html.common._
+@import models._
+@import tags._
+
+@implicitFieldConstructor = @{ b3.horizontal.fieldConstructor("col-md-2", "col-md-8") }
+
+@main("Consulting Inc Services") {
+    <div class="page-header">
+        <h2>All Invoice Details</h2>
+    </div>
+
+    <div class="panel panel-default">
+        <table class="table table-striped table-bordered list-view-table">
+            <thead>
+                <tr class="list-view-header">
+                    <th>Invoice Detail Id</th>
+                    <th>Service Code</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            @for(invoiceDetail <- invoiceDetails) {
+                <tr>
+                    <td><a href="@routes.InvoiceController.editInvoiceDetail(invoiceId, invoiceDetail.id)">@invoiceDetail.id</a></td>
+                    <td>@invoiceDetail.service.id</td>
+                    <td>@invoiceDetail.description</td>
+                    <td class="col-right">
+                    @{ "%.2f".format(invoiceDetail.amount) }
+                    </td>
+                    <td>
+                        <button type="button" class="btn-info" onclick="window.location = '@routes.InvoiceController.editInvoiceDetail(invoiceId, invoiceDetail.id)';" value="edit">Edit</button>
+                        <button type="button" class="btn-danger" onclick="del('@routes.InvoiceController.deleteInvoiceDetail(invoiceId,invoiceDetail.id)';" value="delete">Delete</button>
+                    </td>
+                </tr>
+            }
+
+            </tbody>
+        </table>
+    </div>
+    <div class="btn-group">
+        <div>
+            <button type="button" class="btn btn-success" onclick="window.location='@routes.InvoiceController.addInvoiceDetail(invoiceId)';" value="add">Add New Invoice Detail</button>
+            <button type="button" class="btn btn-warning" onclick="window.location='@routes.InvoiceController.edit(invoiceId)';" value="back">Back</button>
+        </div>
+    </div>
+}

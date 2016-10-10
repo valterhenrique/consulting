@@ -1,0 +1,65 @@
+@(customerForm: play.data.Form[Customer])(mode: String)
+
+@import views.html.common._
+@import models._
+
+@implicitFieldConstructor = @{
+    b3.horizontal.fieldConstructor("col-md-2", "col-md-8")
+}
+@shortFC = @{
+    b3.horizontal.fieldConstructor("col-md-2", "col-md-4")
+}
+
+@main("Customer info") {
+    <div class="page-header">
+        <h2>Customer Information</h2>
+    </div>
+    <fieldset>
+        <legend>Customer (@mode)</legend>
+        @b3.form(action = routes.CustomerController.save(mode)) {
+            @if(mode != "Adding") {
+                @b3.text(customerForm("id"),
+                    '_label -> "Customer Id",
+                    'readOnly -> "readOnly")(shortFC, implicitly[Messages])
+            }
+            @b3.text(customerForm("name"),
+                '_label -> "Name",
+                'maxlength -> 200,
+                'placeholder -> "Name")
+            @b3.textarea(customerForm("address"),
+                '_label -> "Address",
+                'maxlength -> 1000,
+                'placeholder -> "Address")
+            @b3.text(customerForm("city"),
+                '_label -> "City",
+                'maxlength -> 50,
+                'placeholder -> "City")
+            @b3.text(customerForm("state"),
+                '_label -> "State",
+                'maxlength -> 50,
+                'placeholder -> "State")
+            @b3.text(customerForm("postcode"),
+                '_label -> "Postcode",
+                'maxlength -> 10,
+                'placeholder -> "Postcode")(shortFC, implicitly[Messages])
+            @b3.text(customerForm("phone"),
+                '_label -> "Phone",
+                'maxlength -> 20,
+                'placeholder -> "(XXX) XXX-XXXX",
+                'help -> "i.e. (123) 456-7890"
+            )(shortFC, implicitly[Messages])
+            @b3.text(customerForm("email"),
+                '_label -> "Email",
+                'maxlength -> 50,
+                'placeholder -> "Email")
+
+            <div class="form-group">
+                <div class="col-md-offset-2">
+                    <input type="submit" class="btn btn-success" value="Save"/>
+                    <button type="button" class="btn btn-warning" onclick="window.location = '@routes.CustomerController.list()';" value="cancel">Cancel</button>
+                </div>
+            </div>
+
+        }
+    </fieldset>
+}

@@ -1,0 +1,17 @@
+@(field: Field, label: String, placeHolder: String)
+
+@defining(field.value.getOrElse("")){ value =>
+  <div class="form-group" xmlns="http://www.w3.org/1999/html">
+    <label class="col-md-2 control-label">Search</label>
+    <div class="col-md-6">
+      <div class="input-group">
+        <input> id="@{field.name}" name="@{field.name}" value="@value" type="text" class="form-control" placeHolder="@placeHolder">
+          <span class="input-group-btn">
+            <button type="submit" class="btn btn-default">
+              <strong>@label</strong>
+            </button>
+          </span>
+      </div>
+    </div>
+  </div>
+}

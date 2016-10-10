@@ -1,0 +1,38 @@
+@(field: play.api.data.Field, args: (Symbol,Any)*)(implicit handler: b3.B3FieldConstructor)
+
+@*
+* A datepicker component based on
+* https://github.com/eternicode/bootstrap-datepicker
+*
+*@
+
+
+@b3.inputFormGroup(field, withFeedback = false, withLabelFor = true, bs.Args.withDefault(args, 'class -> "form-control")) { fieldInfo =>
+
+  <div class='input-group date' id='@{fieldInfo.id}z' data-date="@fieldInfo.value" data-date-format="dd/mm/yyyy">
+
+    <input type='text' id="@{fieldInfo.id}" name="@{fieldInfo.name}" value="@fieldInfo.value" @toHtmlArgs(fieldInfo.innerArgsMap)/>
+    <span class="input-group-addon">
+      <span class="glyphicon glyphicon-calendar"></span>
+    </span>
+  </div>
+
+  <script type="text/javascript" >
+
+          $('#@{fieldInfo.id}z').keydown(function(e) {
+            e.preventDefault();
+            return false;
+          });
+
+          $(document).ready(function(){
+            $('#@{fieldInfo.id}z').datepicker({
+              format: "dd/mm/yyyy",
+              orientation: "top left",
+              calendarWeeks: true,
+              autoclose: true,
+              todayHighlight: true
+            });
+          });
+
+  </script>
+}

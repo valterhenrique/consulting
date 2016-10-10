@@ -1,0 +1,60 @@
+@(invoiceForm: play.data.Form[Invoice])(mode: String)
+
+@import helper._
+@import tags._
+@import views.html.common._
+
+@import models._
+
+@implicitFieldConstructor = @{
+    b3.horizontal.fieldConstructor("col-md-2", "col-md-8")
+}
+@selectFC = @{
+    b3.horizontal.fieldConstructor("col-md-2", "col-md-6")
+}
+@dateFC = @{
+    b3.horizontal.fieldConstructor("col-md-2", "col-md-3")
+}
+
+@main("Invoice info") {
+    <div class="page-header">
+        <h2>Invoice Information</h2>
+    </div>
+    <fieldset>
+        <legend>Invoice (@mode)</legend>
+        @b3.form(action = routes.InvoiceController.save(mode)) {
+            @if(mode != "Adding") {
+                @b3.text(invoiceForm("id"),
+                    '_label -> "Id",
+                    'readOnly -> "readOnly")(selectFC, implicitly[Messages])
+            }
+            @b3.select(invoiceForm("customer.id"),
+                options = options(Customer.options),
+                '_label -> "Customer",
+                '_default -> "-- Select Customer --")(selectFC, implicitly[Messages])
+
+                <!--
+            @b3.text(invoiceForm("date"),
+                '_label -> "Date",
+                'maxlength -> 10,
+                'placeholder -> "dd/mm/yyyy")(dateFC, implicitly[Messages])
+                -->
+
+            @datePicker(invoiceForm("date"), '_label -> "Date", 'placeholder -> "dd/mm/yyyy")(dateFC)
+
+            <div class="form-group">
+                <div class="col-md-offset-2">
+                    <input type="submit" class="btn btn-success" value="Save"/>
+                    @if(mode != "Adding") {
+                        <button type="button" class="btn btn-info"
+                        onclick="window.location = '@routes.InvoiceController.listInvoiceDetail(invoiceForm("id").value.toLong)';"
+                        value="edit">Edit Invoice Detail</button>
+
+                    }
+                    <button type="button" class="btn btn-warning" onclick="window.location = '@routes.InvoiceController.list()';" value="cancel">
+                        Cancel</button>
+                </div>
+            </div>
+        }
+    </fieldset>
+}

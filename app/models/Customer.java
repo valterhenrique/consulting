@@ -39,7 +39,7 @@ public class Customer extends Model {
     @Constraints.Required(message = "required.message")
     public String phone;
 
-    //    @Constraints.Email
+    @Constraints.Email
     @Constraints.Required(message = "required.message")
     public String email;
 

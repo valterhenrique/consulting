@@ -10,10 +10,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by dev on 14/10/2015.
- */
-
 @Entity
 @Table(name = "customer")
 public class Customer extends Model {
